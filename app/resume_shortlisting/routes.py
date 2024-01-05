@@ -1,5 +1,10 @@
 from flask import Blueprint, request, jsonify
 from PyPDF2 import PdfReader
+import os
+from dotenv import load_dotenv
+
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), '.env'))
+
 
 resume_shortlisting = Blueprint('resume_shortlisting', __name__)
 
@@ -14,8 +19,6 @@ def extract_text_from_pdf(file_path):
 
 @resume_shortlisting.route('/resume_upload', methods=['POST'])
 def upload_file():
-    print("hi")
-    print(request)
     if 'file' not in request.files:
         return jsonify({'error': 'No file part'})
 
@@ -26,7 +29,7 @@ def upload_file():
 
     if file and file.filename.endswith('.pdf'):
         try:
-            file_path = 'F://hiring-management//uploads//' + file.filename
+            file_path = os.getenv("FILE_UPLOAD_PATH") + file.filename
             file.save(file_path)
             text = extract_text_from_pdf(file_path)
             return jsonify({'text': text})
