@@ -6,9 +6,9 @@ main = Blueprint('main', __name__)
 @main.route("/")
 @main.route("/home")
 def home():
-    return "hi there"
+    return render_template("home.html")
 
 
 @main.route("/about")
 def about():
-    return "about page"
+    return render_template("about.html")
