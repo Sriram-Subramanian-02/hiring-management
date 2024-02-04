@@ -1,9 +1,16 @@
-from app import db
+from app import db, login_manager
+from flask_login import UserMixin
 
 
-class Users(db.Model):
+@login_manager.user_loader
+def user_loader(user_id):
+    return db.session.query(Users).filter(Users.id == int(user_id)).first()
+
+
+class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(100), nullable=False, unique=True)
     # type = db.Column(db.ChoiceType(["Applicant", "Company"]))
     address = db.Column(db.String(200))
     skills = db.Column(db.String(200))
@@ -11,7 +18,7 @@ class Users(db.Model):
     state = db.Column(db.String(50))
     job_description = db.Column(db.Text)
     experience = db.Column(db.Integer)
-    password = db.Column(db.String(50))
+    password = db.Column(db.String(200))
 
 
 # class Users(db.Model):
