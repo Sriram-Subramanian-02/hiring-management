@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, SelectField, BooleanField, SelectMultipleField
+from wtforms import StringField, PasswordField, SubmitField, SelectField, BooleanField, SelectMultipleField, ValidationError
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 from app.users.models import Users
+
 
 class RegistrationForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired(), Length(min=1, max=50)])
@@ -26,6 +27,12 @@ class RegistrationForm(FlaskForm):
     experience = StringField('Experience', validators=[DataRequired()])
 
     submit = SubmitField('Sign Up')
+
+
+    def validate_email(self, email):
+        user = Users.query.filter_by(email=email.data).first()
+        if user:
+            raise ValidationError('That email is taken. Please choose a different one.')
 
 
 class LoginForm(FlaskForm):

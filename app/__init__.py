@@ -2,10 +2,16 @@ from flask import Flask
 from app.config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_bcrypt import Bcrypt
+from flask_login import LoginManager
 
 
 db = SQLAlchemy()
 migrate = Migrate()
+bcrypt = Bcrypt()
+login_manager = LoginManager()
+login_manager.login_view = 'users.login'
+login_manager.login_message_category = 'info'
 
 
 def create_app(config_class=Config):
@@ -18,7 +24,10 @@ def create_app(config_class=Config):
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
 
     db.init_app(app)
+    bcrypt.init_app(app)
     migrate.init_app(app, db)
+    login_manager.init_app(app)
+    
 
     from app.main.routes import main
     from app.resume_shortlisting.routes import resume_shortlisting
