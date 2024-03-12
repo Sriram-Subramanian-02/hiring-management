@@ -33,6 +33,11 @@
             <div class="navbar-nav">
               {% if current_user.is_authenticated %}
                 <a class="nav-item nav-link" href="{{ url_for('users.account') }}">Account</a>
+                {% if current_user.type == "Applicant" %}
+                  <a class="nav-item nav-link" href="{{ url_for('users.file_upload') }}">Upload Resume</a>
+                {% else %}
+                  <a class="nav-item nav-link" href="{{ url_for('users.search_candidates') }}">Search Candidates</a>
+                {% endif %}
                 <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>
               {% else %}
                 <a class="nav-item nav-link" href="{{ url_for('users.login') }}">Login</a>

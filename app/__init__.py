@@ -20,8 +20,8 @@ def create_app(config_class=Config):
     
     # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///postgres.db'
     app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:sriram@localhost/sg"
-
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
+    # app.config['UPLOAD_FOLDER'] = 'F:\\psg\\sem_8\\hiring-management\\app\\resumes'
 
     db.init_app(app)
     bcrypt.init_app(app)

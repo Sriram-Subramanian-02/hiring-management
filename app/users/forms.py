@@ -1,12 +1,13 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, SelectField, BooleanField, SelectMultipleField, ValidationError
-from wtforms.validators import DataRequired, Length, Email, EqualTo
+from wtforms import StringField, PasswordField, SubmitField, SelectField, BooleanField, SelectMultipleField, ValidationError, FileField, SubmitField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, InputRequired
 from app.users.models import Users
 
 
 class RegistrationForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired(), Length(min=1, max=50)])
     email = StringField('Email', validators=[DataRequired(), Email()])
+    phone = StringField('Phone Number', validators=[DataRequired()])
 
     # Dropdown for Gender
     gender_choices = [('Male', 'Male'), ('Female', 'Female')]
@@ -41,3 +42,13 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
+
+
+class UploadFileForm(FlaskForm):
+    file = FileField("File", validators=[InputRequired()])
+    submit = SubmitField("Upload File")
+
+
+class FillJobDescription(FlaskForm):
+    job_description = StringField('Job Description', validators=[DataRequired(), Length(min=1, max=500)])
+    submit = SubmitField('Search')
